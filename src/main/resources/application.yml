@@ -1,0 +1,18 @@
+server :
+  port : 80
+  
+spring :
+    thymeleaf :
+        prefix : thyme/
+        suffix : .html
+        cache : false
+         
+            
+    datasource :
+        driver-class-name : org.mariadb.jdbc.Driver
+        url : jdbc:mariadb://127.0.0.1/qos_db?allowMultiQueries=true
+        username : queen
+        password : 1234
+
+mybatis : 
+    type-aliases-package : qos.db
