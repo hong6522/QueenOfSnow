@@ -10,7 +10,7 @@ public class UsrController {
 	@RequestMapping("/main")
 	String main() {
 		
-		return "/usr/index";
+		return "/usr/mainPage";
 	}
 	
 	
