@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
+<th:block layout:fragment="title">
 <style>
 .main_wrapper{
 	width:1200px;
@@ -11,7 +12,7 @@
 	margin:auto;
 }
 .logo_wrapper{
-	width:300px;
+	width:200px;
 	height:100px;
 	float:left;
 	color:#000;
@@ -19,11 +20,11 @@
 .img_wrapper{
 	width:60px;
 	height:60px;
-	margin-left:120px;
+	margin-left:70px;
 	float: left;
 }
 .logo_content{
-	width:300px;
+	width:200px;
 	height:30px;
 	float:left;
 	text-align: center;
@@ -43,6 +44,7 @@
 	float:left;
 	line-height: 60px;
 	text-align: center;
+	color:#000;
 }
 .cate_small{
 	width:70px;
@@ -59,7 +61,7 @@
 	<a href="/usr/main">
 		<div class="logo_wrapper">
 			<div class="img_wrapper">
-				<img alt="" src="/icon/eyebrow.png">
+				<img alt="" src="/icon/eyebrowLogo.png">
 			</div>
 			<div class="logo_content"><b>눈의여왕</b></div>
 		</div>
@@ -68,7 +70,7 @@
 	
 	<div class="cate_wrapper">
 		<div class="cate_big"><b>시술예약</b></div>
-		<div class="cate_big"><b>시술안내/가격</b></div>
+		<a href="/usr/information"><div class="cate_big"><b>시술안내</b></div></a>
 		<div class="cate_big"><b>전후사진</b></div>
 		<div class="cate_big"><b>문의하기</b></div>
 		<div class="cate_big"><b>오시는길</b></div>
@@ -79,4 +81,5 @@
 </div>
 <hr />
 </body>
+</th:block>
 </html>

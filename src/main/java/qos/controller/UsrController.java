@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/usr")
 public class UsrController {
 
-	@RequestMapping("/main")
+	@RequestMapping("/information")
 	String main() {
 		
-		return "/usr/mainPage";
+		return "/usr/information";
 	}
 	
 	
