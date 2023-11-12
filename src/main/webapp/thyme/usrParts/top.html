@@ -15,25 +15,20 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	width:200px;
 	height:100px;
 	float:left;
-	color:#000;
 }
 .img_wrapper{
-	width:60px;
-	height:60px;
-	margin-left:70px;
+	width:130px;
+	height:100px;
+	margin-left:10px;
 	float: left;
 }
-.logo_content{
-	width:200px;
-	height:30px;
-	float:left;
-	text-align: center;
-	line-height: 30px;
-	font-size: 30px;
-	margin-top:5px;
+#logo_img{
+	width:130px;
+	height:100px;
 }
+
 .cate_wrapper{
-	width:900px;
+	width:1000px;
 	height:50px;
 	float:left;
 	margin-top:50px;
@@ -47,13 +42,14 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	color:#000;
 }
 .cate_small{
-	width:70px;
+	width:80px;
 	height:50px;
 	float:left;
 	line-height: 60px;
 	text-align: center;
-	color:#999;
 	margin-left:5px;
+	color:#666;
+	font-size: 15px;
 }
 </style>
 <body>
@@ -61,9 +57,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<a href="/usr/main">
 		<div class="logo_wrapper">
 			<div class="img_wrapper">
-				<img alt="" src="/icon/eyebrowLogo.png">
+				<img alt="" src="/img/logo.png" id="logo_img">
 			</div>
-			<div class="logo_content"><b>눈의여왕</b></div>
 		</div>
 	</a>
 	
@@ -74,8 +69,16 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		<div class="cate_big"><b>전후사진</b></div>
 		<div class="cate_big"><b>문의하기</b></div>
 		<div class="cate_big"><b>오시는길</b></div>
-		<div class="cate_small"><b>회원가입</b></div>
-		<div class="cate_small"><b>로그인</b></div>
+		
+		<span th:if="${session.id}==null">
+			<div class="cate_small"><b>회원가입</b></div>
+			<a href="/usr/login"><div class="cate_small"><b>로그인</b></div></a>
+		</span>
+		<span th:if="${session.id}!=null">
+			<div class="cate_small"><b>마이페이지</b></div>
+			<a href="/usr/logout"><div class="cate_small"><b>로그아웃</b></div></a>
+		</span>
+		
 	</div>
 	
 </div>

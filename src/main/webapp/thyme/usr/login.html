@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="usrParts/top"></head>
+	<title>로그인</title>
+	
+<style>
+	.login_wrapper{
+		width:1200px;
+		height:100%;
+		margin:auto;
+	}
+	.big_wrapper{
+		width:600px;
+		height:500px;
+		margin:auto;
+		margin-top:50px;
+	}
+	.title{
+		width:600px;
+		height:50px;
+		text-align: center;
+		font-size:25px;
+		line-height:50px;
+		float:left;
+	}
+	.id_wrapper{
+		width:600px;
+		height:50px;
+		margin-top:50px;
+		float: left;
+	}
+	.pw_wrapper{
+		width:600px;
+		height:50px;
+		float: left;
+	}
+	#login_id , #login_pw{
+		width:300px;
+		height:35px;
+		border:1px solid #333; 
+		text-align: center;
+		margin-left:150px;
+		margin-top:6px;
+	}
+	#login_button{
+		width:306px;
+		height:40px;
+		border:1px solid #333;
+		margin-left:150px;
+		margin-top:10px;
+		background:#333;
+		color:#fff;
+	}
+	.goButton{
+		width:600px;
+		height:50px;
+		float:left;
+	}
+	.mem_warpper{
+		width:600px;
+		height:50px;
+		margin-top:20px;
+		float:left;
+	}
+	.goJoin{
+		width:100px;
+		height:50px;
+		color:#333;
+		text-align: center;
+		line-height: 50px;
+		font-size: 13px;
+		margin-left:200px;
+		float:left;
+	}
+	.pwFind{
+		width:100px;
+		height:50px;
+		color:#333;
+		text-align: center;
+		line-height: 50px;
+		font-size: 13px;
+		float:left;
+	}
+	.block{
+		width:1.5px;
+		height:20px;
+		margin-top:15px;
+		background:#333;
+		float:left;
+	}
+	
+</style>	
+		
+</head>
+<body>
+<div class="login_wrapper">
+<form method="post">
+	<div class="big_wrapper">
+		<div class="title"><b>LOGIN</b></div>
+		<div class="id_wrapper">
+			<input type="text" id="login_id" placeholder="ID" name="id"/>
+		</div>
+		<div class="pw_wrapper">
+			<input type="password" id="login_pw" placeholder="PW" name="pw"/>
+		</div>
+		<div class="goButton">
+			<input type="submit" value="로그인" id="login_button"/>
+		</div>
+		
+		<div class="mem_warpper">
+			<a href="/usr/join"><div class="goJoin"><b>회원가입</b></div></a>
+			<div class="block"></div>
+			<a href="/usr/pwFind"><div class="pwFind"><b>PW찾기</b></div></a>
+		</div>
+	</div>
+	</form>
+</div>
+</body>
+</html>
