@@ -4,7 +4,23 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head th:replace="usrParts/top"></head>
 	<title>로그인</title>
+<script>
+
+function frmGo(){
 	
+	if(frm.id.value.trim()==''){
+		 alert("ID를 입력해주세요.")
+		 return
+	}
+	if(frm.pw.value.trim()==''){
+		 alert("PW를 입력해주세요.")
+		 return
+	}
+	
+	frm.submit()
+}
+
+</script>
 <style>
 	.login_wrapper{
 		width:1200px;
@@ -96,7 +112,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 </head>
 <body>
 <div class="login_wrapper">
-<form method="post">
+<form method="post" name="frm">
 	<div class="big_wrapper">
 		<div class="title"><b>LOGIN</b></div>
 		<div class="id_wrapper">
@@ -106,7 +122,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 			<input type="password" id="login_pw" placeholder="PW" name="pw"/>
 		</div>
 		<div class="goButton">
-			<input type="submit" value="로그인" id="login_button"/>
+			<input type="button" value="로그인" id="login_button" onclick="frmGo()"/>
 		</div>
 		
 		<div class="mem_warpper">
