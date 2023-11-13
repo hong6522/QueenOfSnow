@@ -71,7 +71,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		<div class="cate_big"><b>오시는길</b></div>
 		
 		<span th:if="${session.id}==null">
-			<div class="cate_small"><b>회원가입</b></div>
+			<a href="/usr/join"><div class="cate_small"><b>회원가입</b></div></a>
 			<a href="/usr/login"><div class="cate_small"><b>로그인</b></div></a>
 		</span>
 		<span th:if="${session.id}!=null">

@@ -42,14 +42,11 @@ public class UsrController {
 			mm.addAttribute("goUrl" , "/usr/login");
 			return "alert";
 		}
-		else if(mdto != null) {
-			session.setAttribute("id", mdto.getId());
-			
-			mm.addAttribute("msg" , mdto.getName()+" 님 환영합니다.");
-			mm.addAttribute("goUrl" , "/usr/information");
-			return "alert";
-		}
 		
+		session.setAttribute("id", mdto.getId());
+
+		mm.addAttribute("msg" , mdto.getName()+" 님 환영합니다.");
+		mm.addAttribute("goUrl" , "/usr/information");
 		return "alert";
 		
 	}
@@ -63,6 +60,13 @@ public class UsrController {
 		mm.addAttribute("msg" , "로그아웃 되었습니다.");
 		mm.addAttribute("goUrl" , "/usr/login");
 		return "alert";
+	}
+	
+	
+	@GetMapping("join")
+	String join() {
+		
+		return "/usr/join";
 	}
 	
 	
