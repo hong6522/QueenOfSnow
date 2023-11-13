@@ -27,11 +27,19 @@ function frmGo(){
 		height:100%;
 		margin:auto;
 	}
-	.big_wrapper{
+	.big_wrapper1{
 		width:600px;
 		height:500px;
 		margin:auto;
-		margin-top:50px;
+		margin-top:100px;
+	}
+	.user_wrapper{
+		width:600px;
+		height:205px;
+		float:left;
+		margin-top:20px;
+		border-top:1px solid #ccc;
+		border-bottom:1px solid #ccc;
 	}
 	.title{
 		width:600px;
@@ -42,93 +50,182 @@ function frmGo(){
 		float:left;
 	}
 	.id_wrapper{
-		width:600px;
+		width:450px;
 		height:50px;
 		margin-top:50px;
 		float: left;
+		border:1px solid #888;
+		margin-left:10px;
 	}
 	.pw_wrapper{
-		width:600px;
+		width:450px;
 		height:50px;
 		float: left;
+		margin-top:5px;
+		margin-left:10px;
+		border:1px solid #888;
 	}
 	#login_id , #login_pw{
 		width:300px;
 		height:35px;
-		border:1px solid #333; 
-		text-align: center;
-		margin-left:150px;
+		border:0px;
 		margin-top:6px;
 	}
 	#login_button{
-		width:306px;
-		height:40px;
+		width:100px;
+		height:107px;
 		border:1px solid #333;
-		margin-left:150px;
-		margin-top:10px;
+		margin-left:10px;
+		margin-top:50px;
 		background:#333;
 		color:#fff;
-	}
-	.goButton{
-		width:600px;
-		height:50px;
 		float:left;
 	}
 	.mem_warpper{
 		width:600px;
-		height:50px;
-		margin-top:20px;
+		height:150px;
+		margin-top:30px;
 		float:left;
 	}
 	.goJoin{
-		width:100px;
-		height:50px;
-		color:#333;
+		width:80px;
+		height:40px;
+		background:#333;
+		color:#fff;
 		text-align: center;
-		line-height: 50px;
+		line-height: 40px;
 		font-size: 13px;
-		margin-left:200px;
+		margin-top:25px;
+		margin-left:20px;
 		float:left;
 	}
 	.pwFind{
-		width:100px;
-		height:50px;
-		color:#333;
+		width:80px;
+		height:40px;
+		background:#333;
+		color:#fff;
 		text-align: center;
-		line-height: 50px;
+		line-height: 40px;
 		font-size: 13px;
+		margin-left:10px;
+		margin-top:5px;
 		float:left;
 	}
 	.block{
 		width:1.5px;
-		height:20px;
+		height:120px;
 		margin-top:15px;
-		background:#333;
+		background:#ccc;
 		float:left;
 	}
-	
+	#id_icon{
+		width:50px;
+		height:50px;
+		float:left;
+	}
+	#pw_icon{
+		width:40px;
+		height:40px;
+		float:left;
+		margin-top:5px;
+		margin-left:10px;
+	}
+	.login_block{
+		width:1px;
+		height:30px;
+		background:#888;
+		float:left;
+		margin-top:10px;
+		margin-left:10px;
+		margin-right: 10px;
+	}
+	.user_left{
+		width:475px;
+		height:200px;
+		float:left;
+	}
+	.mem_left , .mem_right{
+		width:299.25px;
+		height:150px;
+		float:left;
+	}
+	.left_top , .left_bottom{
+		width:299.25px;
+		height:75px;
+	}
+	.left_top_left{
+		width:190px;
+		height:75px;
+		line-height:90px;
+		float:left;
+	}
+	.left_bottom_left{
+		width:200px;
+		height:75px;
+		line-height:50px;
+		float:left;
+	}
+	.kakaoLogin{
+		width:180px;
+		height:40px;
+		margin-top:25px;
+		margin-left:60px;
+	}
+	#api_img{
+		width:180px;
+		height:40px;
+	}
+	#naver_id_login{
+		width:180px;
+		height:40px;
+		margin-top:15px;
+		margin-left:60px;
+	}
 </style>	
 		
 </head>
 <body>
 <div class="login_wrapper">
 <form method="post" name="frm">
-	<div class="big_wrapper">
+	<div class="big_wrapper1">
 		<div class="title"><b>LOGIN</b></div>
-		<div class="id_wrapper">
-			<input type="text" id="login_id" placeholder="ID" name="id"/>
-		</div>
-		<div class="pw_wrapper">
-			<input type="password" id="login_pw" placeholder="PW" name="pw"/>
-		</div>
-		<div class="goButton">
-			<input type="button" value="로그인" id="login_button" onclick="frmGo()"/>
-		</div>
 		
+			<div class="user_wrapper">
+				<div class="user_left">
+					<div class="id_wrapper">
+						<img src="/icon/user.png" alt="" id="id_icon"/>
+						<div class="login_block"></div>
+						<input type="text" id="login_id" placeholder="ID" name="id"/>
+					</div>
+					<div class="pw_wrapper">
+						<img src="/icon/lock.png" alt="" id="pw_icon"/>
+						<div class="login_block"></div>
+						<input type="password" id="login_pw" placeholder="Password" name="pw"/>
+					</div>
+				</div>
+				
+				<div class="user_right">
+					<input type="button" value="로그인" id="login_button" onclick="frmGo()"/>
+				</div>
+			</div>
+			
+			
 		<div class="mem_warpper">
-			<a href="/usr/join"><div class="goJoin"><b>회원가입</b></div></a>
+			<div class="mem_left">
+				<div class="left_top">
+					<div class="left_top_left"><b>아직 회원이 아니신가요?</b></div>
+					<a href="/usr/join"><div class="goJoin">회원가입</div></a>
+				</div>
+				<div class="left_bottom">
+					<div class="left_bottom_left"><b>비밀번호 를 분실하셨나요?</b></div>
+					<a href="/usr/pwFind"><div class="pwFind">PW찾기</div></a>
+				</div>	
+			</div>
 			<div class="block"></div>
-			<a href="/usr/pwFind"><div class="pwFind"><b>PW찾기</b></div></a>
+			<div class="mem_right">
+				<div class="kakaoLogin"><img src="/img/kakao_login.png" alt="" id="api_img"/></div>
+				<div id="naver_id_login"><img src="/img/naver_login.png" alt="" id="api_img"/></div>
+			</div>
 		</div>
 	</div>
 	</form>
