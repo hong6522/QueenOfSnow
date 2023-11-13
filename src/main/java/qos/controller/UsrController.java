@@ -68,6 +68,18 @@ public class UsrController {
 		
 		return "/usr/join";
 	}
+	@PostMapping("join")
+	String join_com(Model mm , MemberDTO dto) {
+		
+		System.out.println(dto);
+		
+		System.out.println(mp.join(dto));
+		
+		mm.addAttribute("msg" ,"회원가입이 완료되었습니다.");
+		mm.addAttribute("goUrl" , "/usr/login");
+		
+		return "alert";
+	}
 	
 	
 }

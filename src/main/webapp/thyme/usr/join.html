@@ -2,10 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org"
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
+
 <head th:replace="usrParts/top"></head>
 <title>회원가입</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+
 	function frmGo(){
+		
+		var frmId = document.getElementById("join_id");
+		
+		if(!frm.terms_chk.checked){
+        	alert("회원가입 약관에 동의해주세요.")
+        	return
+        }
+        if(!frm.privacy_chk.checked){
+        	alert("개인정보 취급방침에 동의해주세요.")
+        	return
+        }
+		
+		if(frm.id.value==''){
+	        alert("아이디를 입력바랍니다.")
+	        return
+	    }
+
+		if(!frmId.readOnly){
+			alert("id 중복확인은 필수 입니다.")
+			return
+		}
+		
+		if(frm.pw.value.trim()==''){
+            alert("비밀번호를 입력하지 않았습니다.")
+            return
+        }
+
+        if(!/^[a-z0-9]{3,16}$/.test(frm.pw.value.trim()) ){
+            alert("비밀번호는 영문,숫자 3~16자리 특수문자는 사용할 수 없습니다.")
+            return
+        }
+        
+        if((frm.pwChk.value.trim()) != (frm.pw.value.trim()) ){
+            alert("비밀번호 불일치")
+            return
+        }
+        
+        if(frm.name.value==''){
+        	alert("이름을 입력해주세요.")
+        	return
+        }
+        
+        if(!/^[가-힣]{2,4}$/.test(frm.name.value.trim())){
+            alert("이름을 다시 입력하세요")
+            return
+        }
+        
+        if(frm.tel.value.trim()==''){
+            alert("전화번호는 필수 입력사항 입니다.")
+            return
+        }
+        
+        if(!/^[0-9]{11}$/.test(frm.tel.value.trim())){
+            alert("전화번호 형식이 잘못되었습니다.")
+            return
+        }
+        
+        if(frm.address1.value.trim()==null || frm.address1.value.trim()==''){
+            alert("주소는 필수 입력사항 입니다.")
+            return
+        }
+        
+        if(frm.address2.value.trim()==null || frm.address2.value.trim()==''){
+            alert("상세주소를 입력해주세요.")
+            return
+        }
+        
 		
 		frm.submit();
 	}
@@ -13,6 +84,46 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	function cancel(){
 		window.location.href = '/usr/mainPage';
 	}
+	
+	function idChk(){
+		
+		$.ajax({
+	    	  url: "/ajax/idChk",
+	    	  method: "POST",
+	    	  data: {
+	    	    id: $("#join_id").val()
+	    	  },
+	    	  success: function(ddd) {
+	    		  
+	    	    alert("이미 사용하고있는 id 입니다.");
+	    	  },
+	    	  error: function(ee) {
+	    	    alert("사용가능한 id 입니다.");
+	    	    $("#join_id").prop("readonly", true)
+	    	  }
+	    	});
+	}
+	
+	function findAddr(){
+		new daum.Postcode({
+	        oncomplete: function(data) {
+	        	
+	        	console.log(data);
+
+	            var roadAddr = data.roadAddress;
+	            var jibunAddr = data.jibunAddress; 
+	            
+	            if(roadAddr !== ''){
+	                document.getElementById("addr1").value = roadAddr;
+	            } 
+	            else if(jibunAddr !== ''){
+	                document.getElementById("addr1").value = jibunAddr;
+	            }
+	        }
+	    }).open();
+	}
+
+	
 </script>
 <style>
 	.chk_wrapper{
@@ -42,7 +153,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		font-size:15px;
 		float:left;
 	}
-	#cate_small{
+	#cate_small ,  #join_id ,#addr1{
 		width:300px;
 		height:35px;
 		border:1px solid #ccc; 
@@ -217,7 +328,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 이 약관은 2010년 10월 26일 시행합니다.</br>
 				</div>
 				<div class="chk_small">
-					<input type="checkbox" id="chk_box" checked="checked"/>
+					<input type="checkbox" id="chk_box" checked="checked" name="terms_chk"/>
 					회원가입 약관에 동의합니다.
 				</div>
 			</div>
@@ -295,7 +406,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 				
 				</div>
 				<div class="chk_small">
-					<input type="checkbox" id="chk_box" checked="checked"/>
+					<input type="checkbox" id="chk_box" checked="checked" name="privacy_chk"/>
 					개인정보 취급방침에 동의합니다.
 				</div>
 			</div>
@@ -305,8 +416,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		
 		<div class="cate">
 			<div class="cate_left"><b style="color: red;">　*</b><b>아이디</b></div>
-			<input type="text" id="cate_small" name="id"/>
-			<input type="button" value="ID중복확인" id="cate_button"/>
+			<input type="text" id="join_id" name="id"/>
+			<input type="button" value="ID중복확인" id="cate_button" onclick="idChk()"/>
 		</div>
 		<div class="cate">
 			<div class="cate_left"><b style="color: red;">　*</b><b>비밀번호</b></div>
@@ -326,8 +437,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		</div>
 		<div class="cate">
 			<div class="cate_left"><b style="color: red;">　*</b><b>주소</b></div>
-			<input type="text" id="cate_small" name="address1" readonly/>
-			<input type="button" value="주소찾기" id="cate_button"/>
+			<input type="text" id="addr1" name="address1" readonly/>
+			<input type="button" value="주소찾기" id="cate_button" onclick="findAddr()"/>
 		</div>
 		<div class="cate">
 			<div class="cate_left"><b style="color: red;">　*</b><b>상세주소</b></div>
