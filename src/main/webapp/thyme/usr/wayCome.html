@@ -18,8 +18,9 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
  	}
  	.map_wrapper{
  		width:1200px;
- 		height:500px;
+ 		height:400px;
  		margin-top:70px;
+ 		float:left;
  	}
  	#kakao_roadView{
  		width:500px;
@@ -27,13 +28,56 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
  		margin-left:10px;
  		float:left;
  	}
- 
+ 	.way_content_wrapper{
+ 		width:1200px;
+ 		height:500px;
+ 		float:left;
+ 		margin:auto;
+ 	}
+ 	.addr_wrapper{
+ 		width:1010px;
+ 		height:50px;
+ 		background:#888;
+ 		margin-left:100px;
+ 		float:left;
+ 	}
+ 	#marker_icon{
+ 		width:30px;
+ 		height:30px;
+ 		margin-top:10px;
+ 		margin-left:150px;
+ 		float:left;
+ 	}
+ 	#cell_icon{
+ 		width:30px;
+ 		height:30px;
+ 		margin-top:10px;
+ 		float:left;
+ 	}
+ 	.addr_content1{
+ 		width:400px;
+ 		height:50px;
+ 		color:#fff;
+ 		line-height: 50px;
+ 		float:left;
+ 		margin-left:5px;
+ 		font-weight: bold;
+ 	}
+ 	.addr_content2{
+ 		width:300px;
+ 		height:50px;
+ 		color:#fff;
+ 		line-height: 50px;
+ 		float:left;
+ 		margin-left:5px;
+ 		font-weight: bold;
+ 	}
  </style>
 <body>
 <div class="wayCome_wrapper">
 	<div class="map_wrapper">
-	<div id="kakao_map"></div>
-	<div id="kakao_roadView"></div>
+		<div id="kakao_map"></div>
+		<div id="kakao_roadView"></div>
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4271081049cc2ced0371956cc4f29739"></script>
 		<script>
 			var container = document.getElementById('kakao_map');
@@ -70,6 +114,12 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 			});
 		</script>
 	</div>
+	<div class="addr_wrapper">
+			<img src="/icon/marker.png" id="marker_icon"/>
+			<div class="addr_content1">주소 : 전북 전주시 완산구 효자천변1길 30-9</div>
+			<img src="/icon/cellphone.png" id="cell_icon"/>
+			<div class="addr_content2">예약문의 : 010 - 9371 - 3776</div>
+		</div>
 </div>
 </body>
 </html>
