@@ -82,4 +82,10 @@ public class UsrController {
 	}
 	
 	
+	@RequestMapping("wayCome")
+	String wayCome() {
+		
+		return "/usr/wayCome";
+	}
+	
 }

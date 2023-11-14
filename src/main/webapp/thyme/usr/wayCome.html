@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="usrParts/top"></head>
+<title>오시는 길</title>
+ <style>
+ 	.wayCome_wrapper{
+ 		width:1200px;
+ 		height:100%;
+ 		margin:auto;
+ 	}
+ 	#kakao_map{
+ 		width:500px;
+ 		height:400px;
+ 		margin-left:100px;
+ 		float:left;
+ 	}
+ 	.map_wrapper{
+ 		width:1200px;
+ 		height:500px;
+ 		margin-top:70px;
+ 	}
+ 	#kakao_roadView{
+ 		width:500px;
+ 		height:400px;
+ 		margin-left:10px;
+ 		float:left;
+ 	}
+ 
+ </style>
+<body>
+<div class="wayCome_wrapper">
+	<div class="map_wrapper">
+	<div id="kakao_map"></div>
+	<div id="kakao_roadView"></div>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4271081049cc2ced0371956cc4f29739"></script>
+		<script>
+			var container = document.getElementById('kakao_map');
+			var options = {
+				center: new kakao.maps.LatLng(35.7997137108529, 127.1144470561386),
+				level: 3
+			};
+	
+			var map = new kakao.maps.Map(container, options);
+			
+			// 마커가 표시될 위치입니다 
+			var markerPosition  = new kakao.maps.LatLng(35.7997137108529, 127.1144470561386); 
+	
+			// 마커를 생성합니다
+			var marker = new kakao.maps.Marker({
+			    position: markerPosition
+			});
+	
+			// 마커가 지도 위에 표시되도록 설정합니다
+			marker.setMap(map);
+	
+			// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+			// marker.setMap(null); 
+			
+			var roadviewContainer = document.getElementById('kakao_roadView'); //로드뷰를 표시할 div
+			var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+			var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+			
+			var position = new kakao.maps.LatLng(35.7997137108529, 127.1144470561386);
+			
+			// 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+			roadviewClient.getNearestPanoId(position, 60, function(panoId) {
+			    roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+			});
+		</script>
+	</div>
+</div>
+</body>
+</html>
