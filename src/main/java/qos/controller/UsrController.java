@@ -18,6 +18,13 @@ public class UsrController {
 	@Resource
 	MemberMapper mp;
 
+	@RequestMapping("main")
+	String main() {
+		
+		return "/usr/main";
+	}
+	
+	
 	@RequestMapping("/information")
 	String information(HttpSession session) {
 		

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="usrParts/top"></head>
+<title>눈의여왕</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .mainPage_wrapper {
+            width: 1200px;
+            height: 100%;
+            margin: auto;
+        }
+
+        .img_wrapper {
+            width: 1200px;
+            height: 550px;
+            overflow: hidden;
+            position: relative;
+        }
+        .abText_wrapper{
+        	width:808px;
+        	height:70px;
+        	position: absolute;
+        	margin-left:196px;
+        	margin-top:450px;
+        	z-index: 10;
+        }
+		
+		.abText1 , .abText2 , .abText3 , .abText4{
+        	width:200px;
+        	height:70px;
+        	float:left;
+        	text-align: center;
+        	line-height: 70px;
+        	font-weight: bold;
+        	background:#ccc;
+        	opacity: 0.5;
+        	border:1px solid #999;
+        }
+        .abText1{
+        	animation: fadeInOut1 24s linear infinite;
+        }
+        .abText2{
+        	animation: fadeInOut2 24s linear infinite;
+        }
+        .abText3{
+        	animation: fadeInOut3 24s linear infinite;
+        }
+        .abText4{
+        	animation: fadeInOut4 24s linear infinite;
+        }
+		
+        .img_container {
+            display: flex;
+            width: 6000px; 
+            height: 550px;
+            animation: slide 24s linear infinite; /* 8초 동안 linear한 속도로 애니메이션 반복 */
+        }
+
+        #main_img1,
+        #main_img2,
+        #main_img3,
+        #main_img4 {
+            width: 1200px;
+            height: 550px;
+            flex-shrink: 0;
+        }
+
+        @keyframes slide {
+            0% ,10%{
+                transform: translateX(0);
+            }
+            20% ,30%{
+                transform: translateX(-1200px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+            }
+            40% ,50%{
+                transform: translateX(-2400px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+            }
+            60% , 70%{
+                transform: translateX(-3600px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+            }
+            80%,90%,100% {
+                transform: translateX(-4800px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+            }
+        }
+        
+        @keyframes fadeInOut1 {
+            0% ,10%{
+                opacity: 1;
+                color:#fff;
+                background:#555;
+                border:1px solid #555;
+            }
+            20%,30%, 40%, 50%, 60%, 70%{
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+            80%,90%,100%{
+                opacity: 1;
+                color:#fff;
+                background:#555;
+                border:1px solid #555;
+            }
+        }
+        @keyframes fadeInOut2 {
+            0% ,10%{
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+            20% , 30%{
+                opacity: 1;
+                color:#fff;
+                background:#555;
+                border:1px solid #555;
+            }
+            40%, 50%, 60%, 70%, 80%, 90% {
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+        }
+        @keyframes fadeInOut3 {
+            0% ,10% ,20% ,30%{
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+            40%, 50%{
+             	opacity: 1;
+                color:#fff;
+                background:#555;
+                border:1px solid #555;
+            }
+            60%, 70%, 80%, 90% {
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+        }
+        @keyframes fadeInOut4 {
+            0% ,10% ,20% ,30% ,40% ,50%{
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+            60%, 70%{
+             	opacity: 1;
+                color:#fff;
+                background:#555;
+                border:1px solid #555;
+            }
+            80%, 90% {
+                opacity: 0.5;
+                color:#000;
+                border:1px solid #999;
+                background:#ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mainPage_wrapper">
+        <div class="img_wrapper">
+        	<div class="abText_wrapper">
+        	<div class="abText1">눈썹 문신</div>
+        	<div class="abText2">헤어 라인</div>
+        	<div class="abText3">두피 문신</div>
+        	<div class="abText4">입술 문신</div>
+        	</div>
+            <div class="img_container">
+                <img src="/img/main1.png" id="main_img1"/>
+                <img src="/img/main2.png" id="main_img2"/>
+                <img src="/img/main3.png" id="main_img3"/>
+                <img src="/img/main4.png" id="main_img4"/>
+                <img src="/img/main1.png" id="main_img1"/>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
