@@ -5,10 +5,6 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="usrParts/top"></head>
 <title>눈의여왕</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
 
         .mainPage_wrapper {
             width: 1200px;
@@ -16,11 +12,46 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             margin: auto;
         }
 
-        .img_wrapper {
+        .main_img_wrapper {
             width: 1200px;
             height: 550px;
             overflow: hidden;
             position: relative;
+        }
+        .shop_wrapper{
+        	width:1200px;
+        	height:500px;
+        	float:left;
+        	margin-top:10px;
+        }
+        .before_after_wrapper{
+        	width:1200px;
+        	height:600px;
+        	float:left;
+        	margin-top:10px;
+        	position: relative;
+        }
+        #beAfImg_main{
+        	width:1200px;
+        	height:600px;
+        }
+        #beAfImg1 , #beAfImg2 , #beAfImg3{
+        	width:770px;
+        	height:600px;
+        	position: absolute;
+        	opacity: 0;
+        }
+        #beAfImg1{
+        	z-index: 3;
+        	animation: beAf1 20s linear infinite;
+        }
+        #beAfImg2{
+        	z-index: 1;
+        	animation: beAf2 20s linear infinite;
+        }
+        #beAfImg3{
+        	z-index: 1;
+        	animation: beAf3 20s linear infinite;
         }
         .abText_wrapper{
         	width:808px;
@@ -59,7 +90,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             display: flex;
             width: 6000px; 
             height: 550px;
-            animation: slide 24s linear infinite; /* 8초 동안 linear한 속도로 애니메이션 반복 */
+            animation: slide 24s linear infinite;
         }
 
         #main_img1,
@@ -76,16 +107,16 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                 transform: translateX(0);
             }
             20% ,30%{
-                transform: translateX(-1200px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+                transform: translateX(-1200px);
             }
             40% ,50%{
-                transform: translateX(-2400px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+                transform: translateX(-2400px);
             }
             60% , 70%{
-                transform: translateX(-3600px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+                transform: translateX(-3600px);
             }
             80%,90%,100% {
-                transform: translateX(-4800px); /* 10%까지 1초 동안 img1에서 img2로 전환 */
+                transform: translateX(-4800px);
             }
         }
         
@@ -169,11 +200,76 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                 background:#ccc;
             }
         }
+        @keyframes beAf1 {
+    0% {
+        opacity: 0.5;
+        z-index: 3;
+    }
+    10%, 20% {
+        opacity: 1;
+        z-index: 3;
+    }
+    30% {
+        opacity: 0;
+        z-index: 3;
+    }
+    40%, 50%, 60%, 70%, 80%, 90% {
+        opacity: 0;
+        z-index: 1;
+    }
+}
+
+@keyframes beAf2 {
+    0%, 10%, 20% {
+        opacity: 0;
+        z-index: 2;
+    }
+    30% {
+        opacity: 0.5;
+        z-index: 3;
+    }
+    40%, 50% {
+        opacity: 1;
+        z-index: 3;
+    }
+    60% {
+        opacity: 0.5;
+        z-index: 3;
+    }
+    70%, 80%, 90%, 100% {
+        opacity: 0;
+        z-index: 1;
+    }
+}
+
+@keyframes beAf3 {
+    0%, 10%, 20%, 30%, 40%, 50% {
+        opacity: 0;
+        z-index: 1;
+    }
+    60% {
+        opacity: 0.5;
+        z-index: 3;
+    }
+    70%, 80%, 95% {
+        opacity: 1;
+        z-index: 3;
+    }
+    100% {
+        opacity: 0.5;
+        z-index: 1;
+    }
+}
+        .shop_img , #shop_img{
+        	width:300px;
+        	height:250px;
+        	float:left;
+        }
     </style>
 </head>
 <body>
     <div class="mainPage_wrapper">
-        <div class="img_wrapper">
+        <div class="main_img_wrapper">
         	<div class="abText_wrapper">
         	<div class="abText1">눈썹 문신</div>
         	<div class="abText2">헤어 라인</div>
@@ -187,7 +283,39 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                 <img src="/img/main4.png" id="main_img4"/>
                 <img src="/img/main1.png" id="main_img1"/>
             </div>
-            
+        </div>
+        <div class=shop_wrapper>
+        	<div class="shop_img">
+        		<img src="/img/shop1.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop2.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop3.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop4.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop5.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop6.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop7.png" alt="" id="shop_img"/>
+        	</div>
+        	<div class="shop_img">
+        		<img src="/img/shop8.png" alt="" id="shop_img"/>
+        	</div>
+        	
+        </div>
+        <div class="before_after_wrapper">
+       		<img src="/img/beAf1.png" alt="" id="beAfImg1"/>
+        	<img src="/img/beAf2.png" alt="" id="beAfImg2"/>
+        	<img src="/img/beAf3.png" alt="" id="beAfImg3"/>
+        	<img src="/img/beAfWar.png" alt="" id="beAfImg_main"/>
         </div>
     </div>
 </body>
