@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<head th:replace="usrParts/top"></head>
+<th:block th:replace="usrParts/top"></th:block>
 <title>로그인</title>
 <script>
 
@@ -231,4 +231,5 @@ function frmGo(){
 	</form>
 </div>
 </body>
+<th:block th:replace="usrParts/footer"></th:block>
 </html>

@@ -17,7 +17,13 @@ public class UsrController {
 	
 	@Resource
 	MemberMapper mp;
-
+	
+	@RequestMapping("temple")
+	String temple() {
+		
+		return "/usr/temple";
+	}
+	
 	@RequestMapping("main")
 	String main() {
 		

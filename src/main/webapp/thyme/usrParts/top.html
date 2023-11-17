@@ -7,7 +7,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <th:block layout:fragment="title">
 <style>
-.main_wrapper{
+.header_main_wrapper{
 	width:1200px;
 	height:100px;
 	margin:auto;
@@ -52,9 +52,12 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	color:#666;
 	font-size: 15px;
 }
+#top_hr{
+	display: block;
+}
 </style>
 <body>
-<div class="main_wrapper">
+<div class="header_main_wrapper">
 	<a href="/usr/main">
 		<div class="logo_wrapper">
 			<div class="img_wrapper">
@@ -83,7 +86,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	</div>
 	
 </div>
-<hr />
+<hr id="top_hr"/>
 </body>
 </th:block>
 </html>
