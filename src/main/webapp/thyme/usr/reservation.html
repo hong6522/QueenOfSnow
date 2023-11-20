@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	
+	//alert("열림?")
+	
+    $(".calendar_day").click(function() {
+    	//alert("눌렀음?")
+		$(this).addClass('calendar_chk')
+		$(".calendar_day").not(this).removeClass('calendar_chk');
+		$(".checkC").not(this).prop('checked', false);
+ 		
+    });
+});
+
+
+</script>
+<th:block th:replace="usrParts/top"></th:block>
+<title>예약하기</title>
+<style>
+	.reservation_wrapper{
+		width:1200px;
+		margin:auto;
+	}
+	.reservation_calendar_wrapper{
+		width:1200px;
+		background:#ff0;
+	}
+	.reservation_calendar{
+		width:412px;
+		margin-top:20px;
+		margin-left:400px;
+		display: block;
+		background:#fff;	
+	}
+	.calendar_month_wrapper{
+		width:412px;
+		height:80px;
+	}
+	.calendar_day{
+	 	display: inline-block;
+		width:50px;
+		height:50px;
+		font-size:15px;
+		text-align: center;
+		line-height: 50px;
+		margin:2px;
+		background:#fff;	
+	}
+	.calendar_week{
+	 	display: inline-block;
+		width:50px;
+		height:50px;
+		font-size:15px;
+		text-align: center;
+		line-height: 50px;
+		margin:2px;
+		background:#fff;	
+	}
+	.calendar_week:nth-child(1){
+		color:#f00;
+	}
+	.calendar_day_start{
+		display: inline-block;
+		color:#fff;
+		width:50px;
+		height:50px;
+		font-size:15px;
+		text-align: center;
+		line-height: 50px;
+		margin:2px;
+		background:#fff;	
+	}
+	.calendar_holiday{
+	 	display: inline-block;
+		color:#f00;
+		width:50px;
+		height:50px;
+		font-size:15px;
+		text-align: center;
+		line-height: 50px;
+		margin:2px;
+		background:#fff;
+		opacity: 0.5;
+	}
+	.calendar_day_before{
+	 	display: inline-block;
+		color:#000;
+		width:50px;
+		height:50px;
+		font-size:15px;
+		text-align: center;
+		line-height: 50px;
+		margin:2px;
+		background:#fff;
+		opacity: 0.5;	
+	}
+	.calendar_chk{
+		color:#C74243;
+		font-weight: bold;
+	}
+	.calendar_search_wrapper{
+		width:412px;
+		height:50px;
+		background:#C74243;
+		display: block;
+		margin-left:400px;
+		color:#fff;
+		font-weight: bold;
+		font-size:20px;
+		text-align: center;
+		line-height: 50px;
+	}
+	.month_left_button{
+		width:25px;
+		height:25px;
+		margin-left:81px;
+		margin-top:27.5px;
+		float:left;
+	}
+	.month_left_button_before{
+		width:25px;
+		height:25px;
+		margin-left:81px;
+		margin-top:27.5px;
+		float:left;
+		opacity: 0.5;
+	}
+	.month_right_button{
+		width:25px;
+		height:25px;
+		float:left;
+		margin-top:27.5px;
+	}
+	.calendar_title{
+		width:200px;
+		height:80px;
+		line-height:80px;
+		float:left;
+		text-align: center;
+		color:#000;
+		font-weight: bold;
+		font-size: 25px;
+	}
+	#arrow{
+		width:25px;
+		height:25px;
+	}
+	.checkC{
+ 		display:none; 
+	}
+</style>
+<body>
+	<div class="reservation_wrapper">
+		<div class="reservation_calendar_wrapper">
+			<div class="reservation_calendar">
+				<div class="calendar_month_wrapper">
+					<th:block th:if="${Rmonth}>0">
+					<a th:href="|/usr/reservation/${Rmonth-1}|"><div class="month_left_button">
+						<img src="/icon/leftArrow.png" id="arrow"/>
+					</div>
+					</a>
+					</th:block>
+					<th:block th:if="${Rmonth}==0">
+					<div class="month_left_button_before">
+						<img src="/icon/leftArrow.png" id="arrow"/>
+					</div>
+					</th:block>
+					<div class="calendar_title" th:text="${title}"></div>
+					<a th:href="|/usr/reservation/${Rmonth+1}|"><div class="month_right_button">
+						<img src="/icon/rightArrow.png" id="arrow"/>
+					</div></a>
+				</div>
+				
+				<th:block th:each="dow : ${week}">
+					<div th:text="${dow}" class="calendar_week"></div>
+				</th:block>
+				
+				<th:block th:if="${start}>1">
+					<th:block th:each="day : ${#numbers.sequence(1,start-1)}">
+						<div class="calendar_day_start">ㅤ</div>
+					</th:block>
+				</th:block>
+				<th:block th:each="day : ${#numbers.sequence(1,last)}">
+					
+						<th:block th:if="${Rmonth}==0">
+							<th:block th:if="${firstSun}==7">
+								<th:block th:if="${day} < ${now} and ${day}%7!=0">
+									<div th:text="${day}" class="calendar_day_before"></div>
+								</th:block>
+								<th:block th:if="${day} < ${now} and ${day}%7==0">
+									<div th:text="${day}" class="calendar_holiday" ></div>
+								</th:block>
+								<th:block th:if="${now} <= ${day} and ${day}%7!=0">
+									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
+									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
+									</label>
+								</th:block>
+								<th:block th:if="${now} <= ${day} and ${day}%7==0">
+									<div th:text="${day}" class="calendar_holiday"></div>
+								</th:block>
+							</th:block>
+							
+							
+							<th:block th:if="${firstSun}!=7">
+								<th:block th:if="${day} < ${now} and ${day}%7!=${firstSun}">
+									<div th:text="${day}" class="calendar_day_before"></div>
+								</th:block>
+								<th:block th:if="${day} < ${now} and ${day}%7==${firstSun}">
+									<div th:text="${day}" class="calendar_holiday"></div>
+								</th:block>
+								<th:block th:if="${now} <= ${day} and ${day}%7!=${firstSun}">
+									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
+									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
+									</label>
+								</th:block>
+								<th:block th:if="${now} <= ${day} and ${day}%7==${firstSun}">
+									<div th:text="${day}" class="calendar_holiday"></div>
+								</th:block>
+							</th:block>
+						</th:block>
+						
+						<th:block th:if="${Rmonth}>0">
+							<th:block th:if="${firstSun}==7">
+								<th:block th:if=${day}%7==0>
+									<div th:text="${day}" class="calendar_holiday"></div>
+								</th:block>
+								<th:block th:if=${day}%7!=0>
+									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
+									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
+									</label>
+								</th:block>
+							</th:block>
+							<th:block th:if="${firstSun}!=7">
+								<th:block th:if="${day}%7==${firstSun}">
+									<div th:text="${day}" class="calendar_holiday"></div>
+								</th:block>
+								<th:block th:if="${day}%7!=${firstSun}">
+									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
+									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
+									</label>
+								</th:block>
+							</th:block>
+						</th:block>
+						
+				</th:block>
+			</div>
+			<div class="calendar_search_wrapper">조회하기</div>
+		</div>
+	</div>
+</body>
+<th:block th:replace="usrParts/footer"></th:block>
+</html>
