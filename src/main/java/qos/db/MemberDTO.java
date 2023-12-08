@@ -10,4 +10,5 @@ import lombok.Data;
 public class MemberDTO {
 	String id , pw , name ,tel , address1 ,address2;
 	boolean privacy_chk , terms_chk;
+	
 }

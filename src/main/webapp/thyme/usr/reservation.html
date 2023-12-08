@@ -4,20 +4,495 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+var Wyear , WRmonth , Wmonth;
+var Syear , Smonth , Sday;
+
 $(document).ready(function() {
 	
-	//alert("열림?")
+	openCalendar()
 	
-    $(".calendar_day").click(function() {
-    	//alert("눌렀음?")
-		$(this).addClass('calendar_chk')
-		$(".calendar_day").not(this).removeClass('calendar_chk');
-		$(".checkC").not(this).prop('checked', false);
- 		
+	$(document).on("click", ".reserTime_small", function() {
+        $(this).addClass("reserTime_chk")
+        $(".reserTime_small").not(this).removeClass('reserTime_chk');
+    });
+	
+	$(document).on("click", ".calendar_day", function() {
+    	if($(this).text()=="오늘"){
+    		$(this).addClass('calendar_chk')
+    		$(this).css("color" , "#fff")
+    		$(".calendar_day").not(this).removeClass('calendar_chk');
+    		$(".checkC").not(this).prop('checked', false);
+    		$(".reserTime_small").removeClass('reserTime_chk');
+    		$(".reserTime_has").removeClass('reserTime_chk');
+    		reserChk(Wyear,Wmonth,$(this).next('.checkC').val())
+    	}
+    	else if($(this).text()!="오늘"){
+			$(this).addClass('calendar_chk')
+			$('.calendar_today').css("color" , "#c74234")
+			$(".calendar_day").not(this).removeClass('calendar_chk');
+			$(".checkC").not(this).prop('checked', false);
+			$(".reserTime_small").removeClass('reserTime_chk');
+			$(".reserTime_has").removeClass('reserTime_chk');
+			reserChk(Wyear,Wmonth,$(this).next('.checkC').val())
+    	}
+    });
+	$(document).on("click", ".month_right_button", function() {
+		passCalendar('right')
+    });
+	$(document).on("click", ".month_left_button", function() {
+		passCalendar('left')
     });
 });
 
+function passCalendar(direction){
+	
+	if(direction=='right'){
+		WRmonth = WRmonth+1
+	}
+	else if(direction=='left'){
+		WRmonth = WRmonth-1
+	}
+	console.log('s값'+Syear+Smonth+Sday)
+	goUrl = "/ajax/openCalendar/"+WRmonth
+	
+	$.ajax({
+	  	  url: goUrl,
+	  	  method: "GET",
+	  	  success: function(calendar) {
+	  		
+	  		console.log(calendar)
+	  		
+	  		Wyear = calendar.year;
+  		
+  			WRmonth = calendar.Rmonth
+  		
+  			Wmonth = calendar.Dmonth
+  			
+  			$('.reservation_calendar').find('div:not(.calendar_month_wrapper), label, :checkbox').remove();
+	  		
+	  		var reservationCalendar = $(".reservation_calendar");
+			
+	  		
+	  		var leftArrow = document.createElement("div");
+	  		var leftArrowImg = document.createElement("img");
+	  		var title = document.createElement("div");
+	  		var rightArrow = document.createElement("div");
+	  		var rightArrowImg = document.createElement("img");
+	  		
+	  		leftArrowImg.src = "/icon/leftArrow.png";
+	  		leftArrowImg.id = 'arrow';
+	  		leftArrow.append(leftArrowImg);
+	  		
+	  		rightArrowImg.src = "/icon/rightArrow.png";
+	  		rightArrowImg.id = 'arrow';
+	  		rightArrow.append(rightArrowImg);
+	  		
+	  		if(WRmonth > 0){
+	  			$(leftArrow).addClass('month_left_button');	
+	  		}
+	  		else{
+	  			$(leftArrow).addClass('month_left_button_before');
+	  		}
+	  		
+	  		$('.calendar_month_wrapper').append(leftArrow);
+	  		
+	  		$(title).addClass('calendar_title');
+	  		$(title).text(calendar.title)
+	  		$('.calendar_month_wrapper').append(title);
+	  		
+	  		$(rightArrow).addClass('month_right_button');
+	  		$('.calendar_month_wrapper').append(rightArrow);
+	  		
+	  		for(var i = 0 ; i < calendar.week.length ; i++){
+	  			
+	  			var weekDay = document.createElement("div");
+	  			
+	  			$(weekDay).addClass('calendar_week');
+	  			$(weekDay).text(calendar.week[i])
+	  			reservationCalendar.append(weekDay);
+	  		}
+	  		for(var count = 1 ; count < calendar.start ; count++){
+	  			
+	  			var startDay = document.createElement("div");
+	  			
+	  			$(startDay).addClass('calendar_day_start');
+	  			$(startDay).text('ㅤ')
+	  			reservationCalendar.append(startDay);
+	  		}
+	  		
+	  		for(var day = 1 ; day <= calendar.last ; day++){
+	  			
+	  			var dayy = document.createElement("div");
+	  			var isHolly = (calendar.firstSun!=7 && day%7==calendar.firstSun) || (calendar.firstSun==7 && day%7==0);
+	  			var isToday = day == calendar.now && calendar.Rmonth == 0;
+	  			
+	  			
+	  			
+	  			var isCheck = Syear == calendar.year && Smonth == calendar.Dmonth && Sday == day;
+	  			
+	  			var label = document.createElement("label");
+	  			var checkbox = document.createElement("input");
+	  			
+	  			console.log('day:'+day+' check:'+isCheck +' today:'+isToday)
+	  			
+	  			checkbox.type = 'checkbox';
+				$(checkbox).addClass('checkC');
+				checkbox.id = 'reservation_chk'+day;
+				checkbox.value = day;
+	  			
+	  			if(WRmonth == 0){
+	  				if(!isToday && !isHolly && day < calendar.now){
+	  					$(dayy).addClass('calendar_day_before');
+	  					$(dayy).text(day)
+	  					reservationCalendar.append(dayy);
+	  				}
+	  				if(!isToday && isHolly){
+	  					$(dayy).addClass('calendar_holiday');
+	  					$(dayy).text(day)
+	  					reservationCalendar.append(dayy);
+	  				}
+	  				if(isToday && isHolly){
+	  					$(dayy).addClass('calendar_holiday');
+	  					$(dayy).text('오늘')
+	  					reservationCalendar.append(dayy);
+	  				}
+	  				if(isToday && !isHolly && !isCheck){
+	  					
+	  					$(dayy).addClass('calendar_today');
+ 	  					$(dayy).addClass('calendar_day');
+ 	  					$(dayy).text('오늘')
 
+ 	  					label.append(dayy);
+ 	  					label.append(checkbox);
+ 	  					
+ 	  					reservationCalendar.append(label);
+	  				}
+	  				if(isToday && !isHolly && isCheck){
+	  					
+	  					$(dayy).addClass('calendar_today');
+	  					$(dayy).addClass('calendar_day');
+	  					$(dayy).addClass('calendar_chk');
+	  					$(dayy).text('오늘')
+	  					dayy.style.color = '#fff';
+	  					
+	  					checkbox.checked = true;
+	  					
+	  					label.append(dayy);
+ 	  					label.append(checkbox);
+ 	  					
+ 	  					reservationCalendar.append(label);
+	  				}
+	  				if(!isToday && !isHolly && !isCheck && day > calendar.now){
+	  					$(dayy).addClass('calendar_day');
+ 	  					$(dayy).text(day)
+ 	  					
+ 	  					label.append(dayy);
+ 	  					label.append(checkbox);
+ 	  					
+ 	  					reservationCalendar.append(label);
+	  				}
+	  				if(!isToday && !isHolly && isCheck && day > calendar.now){
+	  					$(dayy).addClass('calendar_day');
+	  					$(dayy).addClass('calendar_chk');
+ 	  					$(dayy).text(day)
+ 	  					
+ 	  					checkbox.checked = true;
+ 	  					
+ 	  					label.append(dayy);
+ 	  					label.append(checkbox);
+ 	  					
+ 	  					reservationCalendar.append(label);
+	  				}
+	  			}
+	  			
+	  			else if(WRmonth > 0){
+	  				
+	  				if(isHolly){
+	  					$(dayy).addClass('calendar_holiday');
+	  					$(dayy).text(day)
+	  					reservationCalendar.append(dayy);
+	  				}
+	  				if(!isHolly && !isCheck){
+	  					$(dayy).addClass('calendar_day');
+ 	  					$(dayy).text(day)
+ 	  				
+ 	  					label.append(dayy);
+ 	  					label.append(checkbox);
+ 	  					
+ 	  					reservationCalendar.append(label);
+	  				}
+	  				if(!isHolly && isCheck){
+	  					$(dayy).addClass('calendar_day');
+	  					$(dayy).addClass('calendar_chk');
+ 	  					$(dayy).text(day)
+ 	  					
+ 	  					checkbox.checked = true;
+ 	  					
+ 	  					label.append(dayy);
+ 	  					label.append(checkbox);
+ 	  					
+ 	  					reservationCalendar.append(label);
+	  				}
+
+	  			}	  			
+	  		}
+
+	  	  },
+	  	  error: function(ee) {
+	  		
+	  	  }
+		});
+
+	
+}
+
+function openCalendar(){
+	
+	$.ajax({
+  	  url: "/ajax/openCalendar/0",
+  	  method: "GET",
+  	  success: function(calendar) {
+  		
+  		console.log(calendar)
+  		
+  		Wyear = calendar.year;
+  		Syear = calendar.year;
+  		
+  		WRmonth = calendar.Rmonth;
+
+  		Wmonth = calendar.Dmonth;
+  		Smonth = calendar.Dmonth;
+  		
+  		Sday = calendar.now;
+  		
+  		console.log('S' + Syear + ',' + Smonth + ',' + Sday)
+  		
+  		OpenReserChk(calendar.year , calendar.month , calendar.now)
+  		
+  		var reservationCalendar = $(".reservation_calendar");
+  		
+  		var leftArrow = document.createElement("div");
+  		var leftArrowImg = document.createElement("img");
+  		var title = document.createElement("div");
+  		var rightArrow = document.createElement("div");
+  		var rightArrowImg = document.createElement("img");
+  		
+  		leftArrowImg.src = "/icon/leftArrow.png";
+  		leftArrowImg.id = 'arrow';
+  		leftArrow.append(leftArrowImg);
+  		
+  		rightArrowImg.src = "/icon/rightArrow.png";
+  		rightArrowImg.id = 'arrow';
+  		rightArrow.append(rightArrowImg);
+  		
+  		$(leftArrow).addClass('month_left_button_before');
+  		$('.calendar_month_wrapper').append(leftArrow);
+  		
+  		$(title).addClass('calendar_title');
+  		$(title).text(calendar.title)
+  		$('.calendar_month_wrapper').append(title);
+  		
+  		$(rightArrow).addClass('month_right_button');
+  		$('.calendar_month_wrapper').append(rightArrow);
+  		
+  		for(var i = 0 ; i < calendar.week.length ; i++){
+  			
+  			var weekDay = document.createElement("div");
+  			
+  			$(weekDay).addClass('calendar_week');
+  			$(weekDay).text(calendar.week[i])
+  			reservationCalendar.append(weekDay);
+  		}
+  		for(var count = 1 ; count < calendar.start ; count++){
+  			
+  			var startDay = document.createElement("div");
+  			
+  			$(startDay).addClass('calendar_day_start');
+  			$(startDay).text('ㅤ')
+  			reservationCalendar.append(startDay);
+  		}
+  		
+  		for(var day = 1 ; day <= calendar.last ; day++){
+  			
+  			var dayy = document.createElement("div");
+  			var isHolly = (calendar.firstSun!=7 && day%7==calendar.firstSun) || (calendar.firstSun==7 && day%7==0);
+  			var isToday = day == calendar.now;
+  			
+  			var label = document.createElement("label");
+  			var checkbox = document.createElement("input");
+  			
+  			checkbox.type = 'checkbox';
+			$(checkbox).addClass('checkC');
+			checkbox.id = 'reservation_chk'+day;
+			checkbox.value = day;
+  			
+  				if(!isToday && !isHolly && day < calendar.now){
+  					$(dayy).addClass('calendar_day_before');
+  					$(dayy).text(day)
+  					reservationCalendar.append(dayy);
+  				}
+  				if(!isToday && isHolly){
+  					$(dayy).addClass('calendar_holiday');
+  					$(dayy).text(day)
+  					reservationCalendar.append(dayy);
+  				}
+  				if(isToday && isHolly){
+  					$(dayy).addClass('calendar_holiday');
+  					$(dayy).text('오늘')
+  					reservationCalendar.append(dayy);
+  				}
+  				if(isToday && !isHolly){
+  					$(dayy).addClass('calendar_today');
+  					$(dayy).addClass('calendar_day');
+  					$(dayy).addClass('calendar_chk');
+  					$(dayy).text('오늘')
+  					dayy.style.color = '#fff';
+  					
+  					checkbox.checked = true;
+  					
+  					label.append(dayy);
+  					label.append(checkbox);
+  					
+  					reservationCalendar.append(label);
+  				}
+  				if(!isToday && !isHolly && day > calendar.now){
+  					$(dayy).addClass('calendar_day');
+	  					$(dayy).text(day)
+	  					
+	  					label.append(dayy);
+	  					label.append(checkbox);
+	  					
+	  					reservationCalendar.append(label);
+  				}
+  		}
+  	  },
+  	  error: function(ee) {
+  		
+  	  }
+	});
+}
+
+function reserChk(y,m,d){
+	
+		var reserStr = y+"-"+m+"-"+d
+		
+		Syear = y
+		Smonth = m
+		Sday = d
+		
+		console.log(reserStr)
+		
+		$.ajax({
+	    	  url: "/ajax/reserChk",
+	    	  method: "POST",
+	    	  data: {
+	    		 Reservation_date: reserStr
+	    	  },
+	    	  success: function(ddd) {
+	    		if(ddd.length > 0){
+	    			for(var a = 10 ; a <= 21 ; a++){
+	    				for(var i = 0 ; i < ddd.length ; i++){
+		    				if(a <= 12){
+		    					if(ddd[i].reserTime == a){
+			    					$(`#reserTime${a}`).text(a + ':00');
+			    					$(`#reserTime${a}`).removeClass('reserTime_small');
+			    					$(`#reserTime${a}`).addClass('reserTime_has');
+			    				}
+		    					else{
+		    					$(`#reserTime${a}`).text(a + ':00');
+		    					$(`#reserTime${a}`).removeClass('reserTime_has');
+		    					$(`#reserTime${a}`).addClass('reserTime_small');
+			    				}
+		    				}
+		    				if(a >= 14){
+		    					if(ddd[i].reserTime == a){
+			    					$(`#reserTime${a}`).text((a-12) + ':00');
+			    					$(`#reserTime${a}`).removeClass('reserTime_small');
+			    					$(`#reserTime${a}`).addClass('reserTime_has');
+			    				}
+		    					else{
+		    					$(`#reserTime${a}`).text((a-12) + ':00');
+		    					$(`#reserTime${a}`).removeClass('reserTime_has');
+		    					$(`#reserTime${a}`).addClass('reserTime_small');
+			    				}
+		    				}
+		    			} 
+		    		}  
+	    		}
+	    		else{
+	    			for(var a = 10 ; a <= 21 ; a++){
+	    				if(a <= 12){
+	    					$(`#reserTime${a}`).text(a + ':00');
+	    					$(`#reserTime${a}`).addClass('reserTime_small');
+	    					$(`#reserTime${a}`).removeClass('reserTime_has');
+	    				}
+	    				if(a >= 14){
+	    					$(`#reserTime${a}`).text((a-12) + ':00');
+	    					$(`#reserTime${a}`).addClass('reserTime_small');
+	    					$(`#reserTime${a}`).removeClass('reserTime_has');
+	    				}
+		    		}  
+	    		}
+	    	  },
+	    	  error: function(ee) {
+	    	  }
+	    	});
+}
+
+function OpenReserChk(year , month , today){
+	var reserStr = year+"-"+month+"-"+today
+	$.ajax({
+    	  url: "/ajax/reserChk",
+    	  method: "POST",
+    	  data: {
+    		 Reservation_date: reserStr
+    	  },
+    	  success: function(ddd) {
+    		
+    		if(ddd.length > 0){
+    			for(var a = 10 ; a <= 21 ; a++){
+    				for(var i = 0 ; i < ddd.length ; i++){
+    					if(a <= 12){
+	    					if(ddd[i].reserTime == a){
+		    					$(`#reserTime${a}`).text(a + ':00');
+		    					$(`#reserTime${a}`).addClass('reserTime_has');
+		    				}
+	    					else{
+	    					$(`#reserTime${a}`).text(a + ':00');
+	    					$(`#reserTime${a}`).addClass('reserTime_small');
+		    				}
+	    				}
+	    				if(a >= 14){
+	    					if(ddd[i].reserTime == a){
+		    					$(`#reserTime${a}`).text((a-12) + ':00');
+		    					$(`#reserTime${a}`).addClass('reserTime_has');
+		    				}
+	    					else{
+	    					$(`#reserTime${a}`).text((a-12) + ':00');
+	    					$(`#reserTime${a}`).addClass('reserTime_small');
+		    				}
+	    				}
+	    			}
+	    			 
+	    		}  
+    		}
+    		else{
+    			for(var a = 10 ; a <= 21 ; a++){
+    				if(a <= 12){
+    					$(`#reserTime${a}`).text(a + ':00');
+    					$(`#reserTime${a}`).addClass('reserTime_small');
+    				}
+    				if(a >= 14){
+    					$(`#reserTime${a}`).text((a-12) + ':00');
+    					$(`#reserTime${a}`).addClass('reserTime_small');
+    				}
+	    		}  
+    		}
+    	  },
+    	  error: function(ee) {
+    	  }
+    	});
+}
 </script>
 <th:block th:replace="usrParts/top"></th:block>
 <title>예약하기</title>
@@ -28,14 +503,14 @@ $(document).ready(function() {
 	}
 	.reservation_calendar_wrapper{
 		width:1200px;
-		background:#ff0;
 	}
 	.reservation_calendar{
 		width:412px;
 		margin-top:20px;
 		margin-left:400px;
 		display: block;
-		background:#fff;	
+		background:#fff;
+		border-bottom: 1px solid #000;	
 	}
 	.calendar_month_wrapper{
 		width:412px;
@@ -48,7 +523,7 @@ $(document).ready(function() {
 		font-size:15px;
 		text-align: center;
 		line-height: 50px;
-		margin:2px;
+		margin:4px;
 		background:#fff;	
 	}
 	.calendar_week{
@@ -58,11 +533,8 @@ $(document).ready(function() {
 		font-size:15px;
 		text-align: center;
 		line-height: 50px;
-		margin:2px;
+		margin:4px;
 		background:#fff;	
-	}
-	.calendar_week:nth-child(1){
-		color:#f00;
 	}
 	.calendar_day_start{
 		display: inline-block;
@@ -72,7 +544,7 @@ $(document).ready(function() {
 		font-size:15px;
 		text-align: center;
 		line-height: 50px;
-		margin:2px;
+		margin:4px;
 		background:#fff;	
 	}
 	.calendar_holiday{
@@ -83,7 +555,7 @@ $(document).ready(function() {
 		font-size:15px;
 		text-align: center;
 		line-height: 50px;
-		margin:2px;
+		margin:4px;
 		background:#fff;
 		opacity: 0.5;
 	}
@@ -95,12 +567,17 @@ $(document).ready(function() {
 		font-size:15px;
 		text-align: center;
 		line-height: 50px;
-		margin:2px;
+		margin:4px;
 		background:#fff;
 		opacity: 0.5;	
 	}
 	.calendar_chk{
-		color:#C74243;
+		background:#c74243;
+		color:#fff;
+		font-weight: bold;
+	}
+	.calendar_today{
+		color:#c74243;
 		font-weight: bold;
 	}
 	.calendar_search_wrapper{
@@ -151,106 +628,75 @@ $(document).ready(function() {
 		height:25px;
 	}
 	.checkC{
- 		display:none; 
+ 		display: none;
+	}
+	.reserTime_wrapper{
+		width:1200px;
+	}
+	.reserTime_big{
+		width:412px;
+		margin-top:10px;
+		margin-left:400px;
+	}
+	.reserTime_ampm{
+		width:412px;
+		height:50px;
+		margin-left:400px;
+		line-height: 50px;
+		font-weight: bold;
+		display: block;
+	}
+	.reserTime_small{
+		width:80px;
+		height:50px;
+		line-height: 50px;
+		text-align: center;
+		border-radius: 10px 10px 10px 10px;
+		display: inline-block;
+		margin-bottom: 10px;
+		border:1px solid #000;
+	}
+	.reserTime_chk{
+		background:#c74243;
+		color:#fff;
+		font-weight: bold;
+		border:1px solid #fff;
+	}
+	.reserTime_has{
+		width:80px;
+		height:50px;
+		line-height: 50px;
+		text-align: center;
+		border-radius: 10px 10px 10px 10px;
+		display: inline-block;
+		margin-bottom: 10px;
+		border:1px solid #000;
+		opacity: 0.3;
 	}
 </style>
 <body>
 	<div class="reservation_wrapper">
 		<div class="reservation_calendar_wrapper">
 			<div class="reservation_calendar">
-				<div class="calendar_month_wrapper">
-					<th:block th:if="${Rmonth}>0">
-					<a th:href="|/usr/reservation/${Rmonth-1}|"><div class="month_left_button">
-						<img src="/icon/leftArrow.png" id="arrow"/>
-					</div>
-					</a>
-					</th:block>
-					<th:block th:if="${Rmonth}==0">
-					<div class="month_left_button_before">
-						<img src="/icon/leftArrow.png" id="arrow"/>
-					</div>
-					</th:block>
-					<div class="calendar_title" th:text="${title}"></div>
-					<a th:href="|/usr/reservation/${Rmonth+1}|"><div class="month_right_button">
-						<img src="/icon/rightArrow.png" id="arrow"/>
-					</div></a>
-				</div>
-				
-				<th:block th:each="dow : ${week}">
-					<div th:text="${dow}" class="calendar_week"></div>
-				</th:block>
-				
-				<th:block th:if="${start}>1">
-					<th:block th:each="day : ${#numbers.sequence(1,start-1)}">
-						<div class="calendar_day_start">ㅤ</div>
-					</th:block>
-				</th:block>
-				<th:block th:each="day : ${#numbers.sequence(1,last)}">
-					
-						<th:block th:if="${Rmonth}==0">
-							<th:block th:if="${firstSun}==7">
-								<th:block th:if="${day} < ${now} and ${day}%7!=0">
-									<div th:text="${day}" class="calendar_day_before"></div>
-								</th:block>
-								<th:block th:if="${day} < ${now} and ${day}%7==0">
-									<div th:text="${day}" class="calendar_holiday" ></div>
-								</th:block>
-								<th:block th:if="${now} <= ${day} and ${day}%7!=0">
-									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
-									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
-									</label>
-								</th:block>
-								<th:block th:if="${now} <= ${day} and ${day}%7==0">
-									<div th:text="${day}" class="calendar_holiday"></div>
-								</th:block>
-							</th:block>
-							
-							
-							<th:block th:if="${firstSun}!=7">
-								<th:block th:if="${day} < ${now} and ${day}%7!=${firstSun}">
-									<div th:text="${day}" class="calendar_day_before"></div>
-								</th:block>
-								<th:block th:if="${day} < ${now} and ${day}%7==${firstSun}">
-									<div th:text="${day}" class="calendar_holiday"></div>
-								</th:block>
-								<th:block th:if="${now} <= ${day} and ${day}%7!=${firstSun}">
-									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
-									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
-									</label>
-								</th:block>
-								<th:block th:if="${now} <= ${day} and ${day}%7==${firstSun}">
-									<div th:text="${day}" class="calendar_holiday"></div>
-								</th:block>
-							</th:block>
-						</th:block>
-						
-						<th:block th:if="${Rmonth}>0">
-							<th:block th:if="${firstSun}==7">
-								<th:block th:if=${day}%7==0>
-									<div th:text="${day}" class="calendar_holiday"></div>
-								</th:block>
-								<th:block th:if=${day}%7!=0>
-									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
-									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
-									</label>
-								</th:block>
-							</th:block>
-							<th:block th:if="${firstSun}!=7">
-								<th:block th:if="${day}%7==${firstSun}">
-									<div th:text="${day}" class="calendar_holiday"></div>
-								</th:block>
-								<th:block th:if="${day}%7!=${firstSun}">
-									<label th:for="reservation_chk+${day}"><div th:text="${day}" class="calendar_day"></div>
-									<input type="checkbox" th:id="reservation_chk+${day}" th:value="${day}" class="checkC"/>
-									</label>
-								</th:block>
-							</th:block>
-						</th:block>
-						
-				</th:block>
+				<div class="calendar_month_wrapper"></div>
 			</div>
-			<div class="calendar_search_wrapper">조회하기</div>
 		</div>
+		
+		<div class="reserTime_wrapper">
+		<div class="reserTime_ampm">오전</div>
+		<div class="reserTime_big">
+			<th:block th:each="Rtime : ${#numbers.sequence(10,12)}">
+				<div th:id="reserTime+${Rtime}"></div>	
+			</th:block>
+		</div>
+		<div class="reserTime_ampm">오후</div>
+		<div class="reserTime_big">
+			<th:block th:each="Rtime : ${#numbers.sequence(14,21)}">
+				<div th:id="reserTime+${Rtime}"></div>
+			</th:block>		
+		</div>
+		</div>
+		
 	</div>
 </body>
 <th:block th:replace="usrParts/footer"></th:block>

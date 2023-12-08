@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 public class ReservationDTO {
 
-	int Rmonth;
+	String name , cate , tel , reservation_date ,reserTime;
 	
 }
